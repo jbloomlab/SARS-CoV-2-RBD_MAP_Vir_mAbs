@@ -1,6 +1,6 @@
 # Interactive structural visualizations of escape mutation maps
 
-Below are links to interactive visualizations of the effects of single mutations to the SARS-CoV-2 spike receptor-binding domain (RBD) on recognition by each antibody. These visualizations are built using [dms-view](https://dms-view.github.io/docs/). These experiments are described in [this preprint](), and raw data is available [here](https://github.com/jbloomlab/SARS-CoV-2-RBD_MAP_Vir_mAbs/blob/main/results/supp_data/vir_antibodies_raw_data.csv).
+Below are links to interactive visualizations of the effects of single mutations to the SARS-CoV-2 spike receptor-binding domain (RBD) on recognition by each antibody. These visualizations are built using [dms-view](https://dms-view.github.io/docs/). These experiments are described in our preprints [here](https://www.biorxiv.org/content/10.1101/2021.04.06.438709v1) and [here](https://www.biorxiv.org/content/10.1101/2021.04.07.438818v1), and raw data is available [here](https://github.com/jbloomlab/SARS-CoV-2-RBD_MAP_Vir_mAbs/blob/main/results/supp_data/vir_antibodies_raw_data.csv).
 
 Sites of escape are shown for each antibody, and are mapped to the ACE2-bound RBD structure ([PDB 6M0J](https://www.rcsb.org/structure/6M0J).
 
@@ -9,5 +9,4 @@ Sites of escape are shown for each antibody, and are mapped to the ACE2-bound RB
 
 `dms-view` renderings for escape maps projected onto antibody-bound RBD structures (more to come shortly!):
  - <a href="https://dms-view.github.io/?markdown-url=https%3A%2F%2Fraw.githubusercontent.com%2Fjbloomlab%2FSARS-CoV-2-RBD_MAP_Vir_mAbs%2Fmain%2Fdata%2Fdms-view_metadata.md%3Ftoken%3DABECTFIRLI3HCW5YO65AGXLAKUFWI&pdb-url=https%3A%2F%2Fraw.githubusercontent.com%2Fjbloomlab%2FSARS-CoV-2-RBD_MAP_Vir_mAbs%2Fmain%2Fdata%2Fpdbs%2F7jx3.pdb%3Ftoken%3DABECTFIYMLJZ5GELPYIRWITAKUGTE&data-url=https%3A%2F%2Fraw.githubusercontent.com%2Fjbloomlab%2FSARS-CoV-2-RBD_MAP_Vir_mAbs%2Fmain%2Fresults%2Fsupp_data%2Fvir_antibodies_7JX3_dms-view_data.csv%3Ftoken%3DABECTFLS7HV6O3ATEY5GYXTAKUGLM&condition=S2H14&site_metric=site_total+escape&mutation_metric=mut_escape+color+ACE2+bind&selected_sites=403%2C417%2C449%2C455%2C456%2C473%2C489%2C496%2C498%2C499%2C500%2C501&protein-data-color=&protein-other-color=darkblue" target="_blank">S309-, S304, and S2H14-bound RBD (PDB: 7JX3)</a> 
-  
   
