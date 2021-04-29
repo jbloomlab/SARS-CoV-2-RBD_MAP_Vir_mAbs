@@ -86,14 +86,20 @@ vir_whelan_VSV_supp: &vir_whelan_VSV_supp
   label_fontsize: 7  # size of text labels for mutations
   ncol: 5  # number of columns in faceted plot
   antibodies:
-    S309_421: #different selection scheme, no "n" information
+    S309_421:
       display_name: S309
-      replicates_total: 5
-      replicates_escape: 5
+      replicates_total: 33
+      replicates_escape: 33
       mutations:
-        E340A: 5
+        E340K: 13
+        E340A: 6
+        E340G: 4
+        P337L: 10
       label_mutations:
+        - E340K
         - E340A
+        - E340G
+        - P337L
     S2X35_70:  # total of 7 mutants selected
       display_name: S2X35
       replicates_total: 34
@@ -164,9 +170,7 @@ vir_whelan_VSV_supp: &vir_whelan_VSV_supp
         - P499R
         - G446V
         - P499H
-  custom_categories:
-    S309:
-      E340A: live virus escape
+
 
 vir_whelan_VSV_S2X259: &vir_whelan_VSV_S2X259
   spike_sequence: ./data/spike_whelan_S_gene.gb

@@ -411,9 +411,36 @@ display(HTML(selection_df.to_html(index=False)))
       <td>S309_421</td>
       <td>340</td>
       <td>E</td>
+      <td>K</td>
+      <td>13</td>
+      <td>E340K</td>
+    </tr>
+    <tr>
+      <td>vir_whelan_VSV_supp</td>
+      <td>S309_421</td>
+      <td>340</td>
+      <td>E</td>
       <td>A</td>
-      <td>5</td>
+      <td>6</td>
       <td>E340A</td>
+    </tr>
+    <tr>
+      <td>vir_whelan_VSV_supp</td>
+      <td>S309_421</td>
+      <td>340</td>
+      <td>E</td>
+      <td>G</td>
+      <td>4</td>
+      <td>E340G</td>
+    </tr>
+    <tr>
+      <td>vir_whelan_VSV_supp</td>
+      <td>S309_421</td>
+      <td>337</td>
+      <td>P</td>
+      <td>L</td>
+      <td>10</td>
+      <td>P337L</td>
     </tr>
     <tr>
       <td>vir_whelan_VSV_supp</td>
