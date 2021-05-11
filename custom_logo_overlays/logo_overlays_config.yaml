@@ -28,7 +28,7 @@ Vir_core: &core
       site_col: site
       antibody_col: null
       val_col: GISAID_log10_pseudofreq
-      missing_vals: -5.77
+      missing_vals: -6.08
     SARS-CoV-2 number amino acid:
       csv: ../results/custom_plots_Vir/RBD_site_annotations_wide.csv
       site_col: site
@@ -46,12 +46,12 @@ Vir_core: &core
       max: 7
       color_scale: Blues
     SARS-CoV-2 log10 frequency:
-      min: -5.77
-      max: -0.67
+      min: -6.08
+      max: -0.40
       color_scale: Blues
     SARS-CoV-2 number amino acid:
       min: 1
-      max: 8
+      max: 11
       color_scale: Blues
   # how to shade sites
   shading:
@@ -85,7 +85,7 @@ Vir_RBM: &RBM
       site_col: site
       antibody_col: null
       val_col: GISAID_log10_pseudofreq
-      missing_vals: -5.77
+      missing_vals: -6.08
     SARS-CoV-2 number amino acid:
       csv: ../results/custom_plots_Vir/RBD_site_annotations_wide.csv
       site_col: site
@@ -103,12 +103,12 @@ Vir_RBM: &RBM
       max: 7
       color_scale: Blues
     SARS-CoV-2 log10 frequency:
-      min: -5.77
-      max: -0.67
+      min: -6.08
+      max: -0.40
       color_scale: Blues
     SARS-CoV-2 number amino acid:
       min: 1
-      max: 8
+      max: 11
       color_scale: Blues
   # how to shade sites
   shading:
@@ -143,7 +143,7 @@ S309_epitope: &S309_epitope
       site_col: site
       antibody_col: null
       val_col: GISAID_log10_pseudofreq
-      missing_vals: -5.77
+      missing_vals: -6.08
     SARS-CoV-2 number amino acid:
       csv: ../results/custom_plots_Vir/RBD_site_annotations_wide.csv
       site_col: site
@@ -185,12 +185,12 @@ S309_epitope: &S309_epitope
       max: 7
       color_scale: Blues
     SARS-CoV-2 log10 frequency:
-      min: -5.77
-      max: -0.67
+      min: -6.08
+      max: -0.40
       color_scale: Blues
     SARS-CoV-2 number amino acid:
       min: 1
-      max: 8
+      max: 11
       color_scale: Blues
     mean DMS effect, ACE2:
       min: -4.61
@@ -240,7 +240,7 @@ S2E12_epitope: &S2E12_epitope
       site_col: site
       antibody_col: null
       val_col: GISAID_log10_pseudofreq
-      missing_vals: -5.77
+      missing_vals: -6.08
     SARS-CoV-2 number amino acid:
       csv: ../results/custom_plots_Vir/RBD_site_annotations_wide.csv
       site_col: site
@@ -276,12 +276,12 @@ S2E12_epitope: &S2E12_epitope
       max: 7
       color_scale: Blues
     SARS-CoV-2 log10 frequency:
-      min: -5.77
-      max: -0.67
+      min: -6.08
+      max: -0.40
       color_scale: Blues
     SARS-CoV-2 number amino acid:
       min: 1
-      max: 8
+      max: 11
       color_scale: Blues
     mean DMS effect, ACE2:
       min: -4.61
@@ -326,7 +326,7 @@ S2D106_epitope: &S2D106_epitope
       site_col: site
       antibody_col: null
       val_col: GISAID_log10_pseudofreq
-      missing_vals: -5.77
+      missing_vals: -6.08
     SARS-CoV-2 number amino acid:
       csv: ../results/custom_plots_Vir/RBD_site_annotations_wide.csv
       site_col: site
@@ -362,12 +362,12 @@ S2D106_epitope: &S2D106_epitope
       max: 7
       color_scale: Blues
     SARS-CoV-2 log10 frequency:
-      min: -5.77
-      max: -0.67
+      min: -6.08
+      max: -0.40
       color_scale: Blues
     SARS-CoV-2 number amino acid:
       min: 1
-      max: 8
+      max: 11
       color_scale: Blues
     mean DMS effect, ACE2:
       min: -4.61
@@ -413,7 +413,7 @@ S304_epitope: &S304_epitope
       site_col: site
       antibody_col: null
       val_col: GISAID_log10_pseudofreq
-      missing_vals: -5.77
+      missing_vals: -6.08
     SARS-CoV-2 number amino acid:
       csv: ../results/custom_plots_Vir/RBD_site_annotations_wide.csv
       site_col: site
@@ -449,12 +449,12 @@ S304_epitope: &S304_epitope
       max: 7
       color_scale: Blues
     SARS-CoV-2 log10 frequency:
-      min: -5.77
-      max: -0.67
+      min: -6.08
+      max: -0.40
       color_scale: Blues
     SARS-CoV-2 number amino acid:
       min: 1
-      max: 8
+      max: 11
       color_scale: Blues
     mean DMS effect, ACE2:
       min: -4.61
@@ -499,7 +499,7 @@ S2X35_epitope: &S2X35_epitope
       site_col: site
       antibody_col: null
       val_col: GISAID_log10_pseudofreq
-      missing_vals: -5.77
+      missing_vals: -6.08
     SARS-CoV-2 number amino acid:
       csv: ../results/custom_plots_Vir/RBD_site_annotations_wide.csv
       site_col: site
@@ -535,12 +535,12 @@ S2X35_epitope: &S2X35_epitope
       max: 7
       color_scale: Blues
     SARS-CoV-2 log10 frequency:
-      min: -5.77
-      max: -0.67
+      min: -6.08
+      max: -0.40
       color_scale: Blues
     SARS-CoV-2 number amino acid:
       min: 1
-      max: 8
+      max: 11
       color_scale: Blues
     mean DMS effect, ACE2:
       min: -4.61
@@ -585,7 +585,7 @@ S2H14_epitope: &S2H14_epitope
       site_col: site
       antibody_col: null
       val_col: GISAID_log10_pseudofreq
-      missing_vals: -5.77
+      missing_vals: -6.08
     SARS-CoV-2 number amino acid:
       csv: ../results/custom_plots_Vir/RBD_site_annotations_wide.csv
       site_col: site
@@ -621,12 +621,12 @@ S2H14_epitope: &S2H14_epitope
       max: 7
       color_scale: Blues
     SARS-CoV-2 log10 frequency:
-      min: -5.77
-      max: -0.67
+      min: -6.08
+      max: -0.40
       color_scale: Blues
     SARS-CoV-2 number amino acid:
       min: 1
-      max: 8
+      max: 11
       color_scale: Blues
     mean DMS effect, ACE2:
       min: -4.61
@@ -671,7 +671,7 @@ S2X259_epitope: &S2X259_epitope
       site_col: site
       antibody_col: null
       val_col: GISAID_log10_pseudofreq
-      missing_vals: -5.77
+      missing_vals: -6.08
     SARS-CoV-2 number amino acid:
       csv: ../results/custom_plots_Vir/RBD_site_annotations_wide.csv
       site_col: site
@@ -707,12 +707,12 @@ S2X259_epitope: &S2X259_epitope
       max: 7
       color_scale: Blues
     SARS-CoV-2 log10 frequency:
-      min: -5.77
-      max: -0.67
+      min: -6.08
+      max: -0.40
       color_scale: Blues
     SARS-CoV-2 number amino acid:
       min: 1
-      max: 8
+      max: 11
       color_scale: Blues
     mean DMS effect, ACE2:
       min: -4.61
@@ -758,7 +758,7 @@ S2H13_epitope: &S2H13_epitope
       site_col: site
       antibody_col: null
       val_col: GISAID_log10_pseudofreq
-      missing_vals: -5.77
+      missing_vals: -6.08
     SARS-CoV-2 number amino acid:
       csv: ../results/custom_plots_Vir/RBD_site_annotations_wide.csv
       site_col: site
@@ -788,12 +788,12 @@ S2H13_epitope: &S2H13_epitope
       max: 7
       color_scale: Blues
     SARS-CoV-2 log10 frequency:
-      min: -5.77
-      max: -0.67
+      min: -6.08
+      max: -0.40
       color_scale: Blues
     SARS-CoV-2 number amino acid:
       min: 1
-      max: 8
+      max: 11
       color_scale: Blues
     mean DMS effect, ACE2:
       min: -4.61
@@ -834,7 +834,7 @@ S2H97_epitope: &S2H97_epitope
       site_col: site
       antibody_col: null
       val_col: GISAID_log10_pseudofreq
-      missing_vals: -5.77
+      missing_vals: -6.08
     SARS-CoV-2 number amino acid:
       csv: ../results/custom_plots_Vir/RBD_site_annotations_wide.csv
       site_col: site
@@ -870,12 +870,12 @@ S2H97_epitope: &S2H97_epitope
       max: 7
       color_scale: Blues
     SARS-CoV-2 log10 frequency:
-      min: -5.77
-      max: -0.67
+      min: -6.08
+      max: -0.40
       color_scale: Blues
     SARS-CoV-2 number amino acid:
       min: 1
-      max: 8
+      max: 11
       color_scale: Blues
     mean DMS effect, ACE2:
       min: -4.61
