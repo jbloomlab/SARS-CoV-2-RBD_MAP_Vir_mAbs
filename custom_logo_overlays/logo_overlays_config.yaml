@@ -859,6 +859,12 @@ S2H97_epitope: &S2H97_epitope
       antibody_col: null
       val_col: S2H97_contact_energy
       missing_vals: 0
+    MD simulation contacts:
+      csv: MD_contacts.csv
+      site_col: site
+      antibody_col: null
+      val_col: S2H97_contact
+      missing_vals: 0
   # how to color letters: provide color, or use DMS (bind_color or expr_color)
   letter_colors: expr_color
   # Overlays of site info along with color scale. Specify min and max if you don't
@@ -888,6 +894,10 @@ S2H97_epitope: &S2H97_epitope
     contact energies:
       min: 0
       max: 31
+      color_scale: Greens
+    MD simulation contacts:
+      min: 0
+      max: 15
       color_scale: Greens
   # how to shade sites
   shading:
