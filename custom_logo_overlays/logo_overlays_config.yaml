@@ -219,7 +219,7 @@ S2E12_epitope: &S2E12_epitope
   # another name for antibody that might be used in specifying site_info
   short_name: S2E12
   # list all sites to show
-  sites: [417, 455, 456, 473, 474, 475, 476, 477, 478, 479,
+  sites: [417, 453, 455, 456, 473, 475, 476, 477, 478, 479,
           480, 484, 485, 486, 487, 488, 489, 493]
   # keyword args here: https://jbloomlab.github.io/dmslogo/dmslogo.logo.html#dmslogo.logo.draw_logo
   dmslogo_draw_logo_kwargs:
@@ -293,7 +293,7 @@ S2E12_epitope: &S2E12_epitope
       color_scale: Greys_r
     contact energies:
       min: 0
-      max: 30
+      max: 36
       color_scale: Greens
   # how to shade sites
   shading:
