@@ -158,7 +158,7 @@ s2e12_epitope_single_nt:
   conditions:
     S2E12_56: S2E12
   plot_auto_identified_sites: false
-  add_sites: [417, 455, 456, 473, 474, 475, 476, 477, 478, 479,
+  add_sites: [417, 453, 455, 456, 473, 475, 476, 477, 478, 479,
           480, 484, 485, 486, 487, 488, 489, 493]
   exclude_sites: []
   site_color_scheme: null
