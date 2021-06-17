@@ -107,6 +107,10 @@ Read in escape fractions, filter for Vir mAbs.
 
     dt[,site_max_escape:=max(mut_escape_frac,na.rm=T),by=c("antibody","site")]
 
+    #load prior dms data
+    dms <- data.table(read.csv(file=config$mut_bind_expr,stringsAsFactors=F));dms[,mutation:=NULL]
+    setnames(dms,"site_SARS2","site");setnames(dms,"mutant","mutation");setnames(dms,"bind_avg","dms_bind");setnames(dms,"expr_avg","dms_expr")
+
     #read in GISAID alignment
     alignment <- bio3d::read.fasta(file=config$rbd_alignment,rm.dup=F)
 
@@ -228,10 +232,6 @@ ACE2 contact? (For S2E12)
     #calc gisaid alignment entropy
     entropy <- entropy(alignment)$H
     RBD_sites$GISAID_entropy <- entropy
-
-    #load prior dms data
-    dms <- data.table(read.csv(file=config$mut_bind_expr,stringsAsFactors=F));dms[,mutation:=NULL]
-    setnames(dms,"site_SARS2","site");setnames(dms,"mutant","mutation");setnames(dms,"bind_avg","dms_bind");setnames(dms,"expr_avg","dms_expr")
 
     #annotate mean bind and expr effect of mut at each site
     for(i in 1:nrow(RBD_sites)){
@@ -421,6 +421,134 @@ escapability.
 
     #write table
     write.csv(antibody_annotations,file=paste(output_dir,"/antibody_annotations.csv",sep=""),row.names=F)
+
+Calculate escapabilities separately for lib1 and lib2 selections, check
+out correlation in this property?
+
+    #very ugly code but gets the job done quickly
+    dt_lib1 <- data.table(read.csv(file=config$escape_fracs,stringsAsFactors=F))
+    #all mAbs used in plots
+    dt_lib1 <- dt_lib1[selection %in% names(mds_config$Vir_antibodies_v_pub$conditions) & library=="lib1", .(selection,condition,site,protein_site,wildtype,mutation,mut_escape_frac_epistasis_model,site_total_escape_frac_epistasis_model)]
+
+    setnames(dt_lib1,"mut_escape_frac_epistasis_model","mut_escape_frac");setnames(dt_lib1,"site_total_escape_frac_epistasis_model","site_total_escape")
+
+    dt_lib1[,antibody:=as.character(mds_config$Vir_antibodies_v_pub$conditions[selection])]
+
+    dt_lib1 <- dt_lib1[,.(antibody,protein_site,wildtype,mutation,mut_escape_frac,site_total_escape)]
+    setnames(dt_lib1,"protein_site","site")
+
+    dt_lib1[,site_max_escape:=max(mut_escape_frac,na.rm=T),by=c("antibody","site")]
+
+    dt_lib2 <- data.table(read.csv(file=config$escape_fracs,stringsAsFactors=F))
+    #all mAbs used in plots
+    dt_lib2 <- dt_lib2[selection %in% names(mds_config$Vir_antibodies_v_pub$conditions) & library=="lib2", .(selection,condition,site,protein_site,wildtype,mutation,mut_escape_frac_epistasis_model,site_total_escape_frac_epistasis_model)]
+
+    setnames(dt_lib2,"mut_escape_frac_epistasis_model","mut_escape_frac");setnames(dt_lib2,"site_total_escape_frac_epistasis_model","site_total_escape")
+
+    dt_lib2[,antibody:=as.character(mds_config$Vir_antibodies_v_pub$conditions[selection])]
+
+    dt_lib2 <- dt_lib2[,.(antibody,protein_site,wildtype,mutation,mut_escape_frac,site_total_escape)]
+    setnames(dt_lib2,"protein_site","site")
+
+    dt_lib2[,site_max_escape:=max(mut_escape_frac,na.rm=T),by=c("antibody","site")]
+
+    dt_reps <- merge(dt_lib1, dt_lib2, by=c("antibody", "site", "wildtype", "mutation"),sort=F,suffixes=c("_lib1","_lib2"))
+
+    #subset to just Vir mAbs
+    dt_reps <- dt_reps[antibody %in% c("S2D106","S2E12","S2H13","S2H14","S2H58","S2H97","S2X16","S2X227","S2X35","S2X58","S304","S309")]
+
+    #calculate escapabilities separate for each replicate
+    #lib1
+    dt_reps[,mut_escape_frac_norm_mode_lib1 := mut_escape_frac_lib1/max(mut_escape_frac_lib1,na.rm=T),by="antibody"]
+
+    #Compute escapability as sum of muts above 5x global median escape across antibodies
+    dt_reps[,mut_5x_all_censored_lib1:=1]
+    dt_reps[mut_escape_frac_lib1 < cutoff1,mut_5x_all_censored_lib1:=0]
+    dt_reps[,antibody_escapability_lib1:=sum(mut_5x_all_censored_lib1*mut_escape_frac_norm_mode_lib1),by="antibody"]
+    #unique(dt_reps[,.(antibody,antibody_escapability_lib1)])
+
+    #next, let's add factor weights for ACE2 binding and RBD expression. We'll take the DMS scores, and rescale them to be from 0 to 1, and make each of these additional multiplicative factors for the per-mut score that is summed (along with the >5x median factor)
+
+    dt_reps <- merge(dt_reps,dms[,.(site,wildtype,mutation,dms_bind,dms_expr)],sort=F)
+    #rescale 0 to 1, where any score <-1 is set to 0, and linear scale to value 1 for dms scores >=0
+    dt_reps[,dms_bind_rescale := (dms_bind - -1)/(0 - -1)]
+    dt_reps[dms_bind_rescale>1,dms_bind_rescale:=1];dt_reps[dms_bind_rescale<0,dms_bind_rescale:=0]
+    dt_reps[,dms_expr_rescale := (dms_expr - -1)/(0 - -1)]
+    dt_reps[dms_expr_rescale>1,dms_expr_rescale:=1];dt_reps[dms_expr_rescale<0,dms_expr_rescale:=0]
+
+    #compute function-weighted escapability, squaring the tolerance expression values (heightens penalization)
+    dt_reps[,antibody_escapability_tolerance_weighted_lib1:=sum(mut_5x_all_censored_lib1*dms_bind_rescale^2*dms_expr_rescale^2*mut_escape_frac_norm_mode_lib1),by="antibody"]
+    #unique(dt_reps[,.(antibody,antibody_escapability_tolerance_weighted_lib1)])
+
+    #add natural frequencies to scores table
+    dt_reps[,count:=0];dt_reps[,frequency:=0]
+    for(i in 1:nrow(counts)){
+      dt_reps[site==counts[i,"site"] & mutation==counts[i,"mutant"],count:=counts[i,"count"]]
+      dt_reps[site==counts[i,"site"] & mutation==counts[i,"mutant"],frequency:=counts[i,"frequency"]]
+    }
+
+    #compute robustness to natural variation as a simple sum of frequencies of 'strong escape' mutations
+    dt_reps[,antibody_escapability_natural_variants_lib1:=sum(frequency*mut_5x_all_censored_lib1),by="antibody"]
+    #unique(dt_reps[,.(antibody,antibody_escapability_natural_variants_lib1)])
+
+
+    #lib2
+    dt_reps[,mut_escape_frac_norm_mode_lib2 := mut_escape_frac_lib2/max(mut_escape_frac_lib2,na.rm=T),by="antibody"]
+
+    #Compute escapability as sum of muts above 5x global median escape across antibodies
+    dt_reps[,mut_5x_all_censored_lib2:=1]
+    dt_reps[mut_escape_frac_lib2 < cutoff1,mut_5x_all_censored_lib2:=0]
+    dt_reps[,antibody_escapability_lib2:=sum(mut_5x_all_censored_lib2*mut_escape_frac_norm_mode_lib2),by="antibody"]
+    #unique(dt_reps[,.(antibody,antibody_escapability_lib2)])
+
+    #next, let's add factor weights for ACE2 binding and RBD expression. We'll take the DMS scores, and rescale them to be from 0 to 1, and make each of these additional multiplicative factors for the per-mut score that is summed (along with the >5x median factor)
+
+    dt_reps <- merge(dt_reps,dms[,.(site,wildtype,mutation,dms_bind,dms_expr)],sort=F)
+    #rescale 0 to 1, where any score <-1 is set to 0, and linear scale to value 1 for dms scores >=0
+    dt_reps[,dms_bind_rescale := (dms_bind - -1)/(0 - -1)]
+    dt_reps[dms_bind_rescale>1,dms_bind_rescale:=1];dt_reps[dms_bind_rescale<0,dms_bind_rescale:=0]
+    dt_reps[,dms_expr_rescale := (dms_expr - -1)/(0 - -1)]
+    dt_reps[dms_expr_rescale>1,dms_expr_rescale:=1];dt_reps[dms_expr_rescale<0,dms_expr_rescale:=0]
+
+    #compute function-weighted escapability, squaring the tolerance expression values (heightens penalization)
+    dt_reps[,antibody_escapability_tolerance_weighted_lib2:=sum(mut_5x_all_censored_lib2*dms_bind_rescale^2*dms_expr_rescale^2*mut_escape_frac_norm_mode_lib2),by="antibody"]
+    #unique(dt_reps[,.(antibody,antibody_escapability_tolerance_weighted_lib2)])
+
+    #add natural frequencies to scores table
+    dt_reps[,count:=0];dt_reps[,frequency:=0]
+    for(i in 1:nrow(counts)){
+      dt_reps[site==counts[i,"site"] & mutation==counts[i,"mutant"],count:=counts[i,"count"]]
+      dt_reps[site==counts[i,"site"] & mutation==counts[i,"mutant"],frequency:=counts[i,"frequency"]]
+    }
+
+    #compute robustness to natural variation as a simple sum of frequencies of 'strong escape' mutations
+    dt_reps[,antibody_escapability_natural_variants_lib2:=sum(frequency*mut_5x_all_censored_lib2),by="antibody"]
+    #unique(dt_reps[,.(antibody,antibody_escapability_natural_variants_lib2)])
+
+    corrs <- unique(dt_reps[,.(antibody,antibody_escapability_lib1, antibody_escapability_lib2, antibody_escapability_tolerance_weighted_lib1, antibody_escapability_tolerance_weighted_lib2, antibody_escapability_natural_variants_lib1, antibody_escapability_natural_variants_lib2)])
+
+    #scale escapability and escapability_tolerance_weighted to be 0,1 relative scale
+    corrs$antibody_escapability_scale <- as.numeric(NA)
+    corrs$antibody_escapability_tolerance_weighted_scale <- as.numeric(NA)
+
+    corrs[,antibody_escapability_rescale_lib1:=antibody_escapability_lib1]
+    corrs[,antibody_escapability_tolerance_weighted_rescale_lib1:=antibody_escapability_tolerance_weighted_lib1]
+    corrs[,antibody_escapability_rescale_lib2:=antibody_escapability_lib2]
+    corrs[,antibody_escapability_tolerance_weighted_rescale_lib2:=antibody_escapability_tolerance_weighted_lib2]
+
+    corrs$antibody_escapability_rescale_lib1 <- rescale(corrs$antibody_escapability_rescale_lib1,to=c(0,1),from=c(0,max(corrs$antibody_escapability_rescale_lib1,na.rm=T)))
+    corrs$antibody_escapability_tolerance_weighted_rescale_lib1 <- rescale(corrs$antibody_escapability_tolerance_weighted_rescale_lib1,to=c(0,1),from=c(0,max(corrs$antibody_escapability_tolerance_weighted_rescale_lib1,na.rm=T)))
+    corrs$antibody_escapability_rescale_lib2 <- rescale(corrs$antibody_escapability_rescale_lib2,to=c(0,1),from=c(0,max(corrs$antibody_escapability_rescale_lib2,na.rm=T)))
+    corrs$antibody_escapability_tolerance_weighted_rescale_lib2 <- rescale(corrs$antibody_escapability_tolerance_weighted_rescale_lib2,to=c(0,1),from=c(0,max(corrs$antibody_escapability_tolerance_weighted_rescale_lib2,na.rm=T)))
+
+    #plot correlations
+    par(mfrow=c(1,2))
+    plot(corrs$antibody_escapability_rescale_lib1,corrs$antibody_escapability_rescale_lib2,pch=16,xlab="library replicate 1", ylab="library replicate 2", main="relative epitope size",xlim=c(0,1),ylim=c(0,1))
+    plot(corrs$antibody_escapability_tolerance_weighted_rescale_lib1,corrs$antibody_escapability_tolerance_weighted_rescale_lib2,pch=16,xlab="library replicate 1", ylab="library replicate 2", main="relative escapability",xlim=c(0,1),ylim=c(0,1))
+
+<img src="custom-plots_Vir_files/figure-gfm/escapability_correations-1.png" style="display: block; margin: auto;" />
+
+    invisible(dev.print(pdf, paste(output_dir,"/escapability_replicates.pdf",sep=""),useDingbats=F))
 
 To use this antibody\_annotations file for coloring MDS plots, we need
 to convert to wide form, rescale all to be relative values 0 to 1 (where
