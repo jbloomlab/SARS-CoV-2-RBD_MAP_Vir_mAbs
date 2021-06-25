@@ -206,7 +206,7 @@ S309_epitope: &S309_epitope
       color_scale: Greens
     MD simulation contacts:
       min: 0
-      max: 26
+      max: 15
       color_scale: Greens
   # how to shade sites
   shading:
